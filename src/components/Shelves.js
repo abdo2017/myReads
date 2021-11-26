@@ -1,5 +1,6 @@
 import React from "react";
 import Shelf from "./Shelf";
+import Header  from "./Header";
 
 class Shelves extends React.Component {
   render() {
@@ -12,9 +13,7 @@ class Shelves extends React.Component {
     const read = allBooks.filter(book => book.shelf === "read");
     return (
         <>
-        <div className="list-books-title">
-          <h1>MyReads</h1>
-        </div>
+          <Header />
 
       <div className="list-books-content">
         <div>

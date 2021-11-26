@@ -4,11 +4,12 @@ import "./App.css";
 import Shelves from "./components/Shelves";
 import Search from "./components/Search";
 import SearchButton from "./components/SearchButton";
-import Header from "./components/Header";
 
 import * as BooksAPI from "./BooksAPI";
 
 class BooksApp extends React.Component {
+
+
   state = {
     showSearchPage: false,
     books: [],
@@ -16,45 +17,58 @@ class BooksApp extends React.Component {
   };
 
   updateSeachPageState = state => {
-    console.log("HERE", state);
     this.setState({ showSearchPage: state });
   };
 
-  componentDidMount() {
+  componentDidMount = () =>  {
     BooksAPI.getAll().then(resp => this.setState({ books: resp }));
   }
 
-  changeBookShelf = (book, shelf) => {
-    // this.setState({
-    //   books: this.state.books.map(b => {
-    //     b.id === book.id ? (b.shelf = shelf) : b;
-    //     return b;
-    //   })
-    // });
-    const filteredBooks = this.state.books.map(b => {
-      if (b.id === book.id) {
-        b.shelf = shelf;
-        return b;
-      }else {
-        return b;
-      }
-    })
-    this.setState({books : filteredBooks});
-  };
+  updateBookShelf = (book, shelf) => {
+    let filteredBooks = this.state.books.filter(b => b.id === book.id);
+    if (filteredBooks.length === 0) {
+      // add new book
+      book.shelf = shelf;
+      this.setState(state => ({
+        books: state.books.concat([book])
+      }));
+    } else {
+      this.setState(state => ({
+        books: state.books.map(b => {
+          if ( b.id === book.id ) {
+            b.shelf = shelf;
+          }
+          return b;
+        })
+      }));
+    }
+    BooksAPI.update(book, shelf);
+  }
+
+
 
   render() {
+    console.log(this.state.books)
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <Search showSeachPage={this.updateSeachPageState} />
+
+          <Search
+              showSeachPage={this.updateSeachPageState}
+              changeShelf={this.updateBookShelf}
+          />
+
         ) : (
           <div className="list-books">
-            <Header />
+
             <Shelves
               allBooks={this.state.books}
-              changeShelf={this.changeBookShelf}
+              changeShelf={this.updateBookShelf}
             />
+
             <SearchButton showSearchPage={this.updateSeachPageState} />
+
+
           </div>
         )}
       </div>
