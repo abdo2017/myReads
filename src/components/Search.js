@@ -2,6 +2,8 @@ import React from "react";
 // import Shelf from "./Shelf";
 import * as BooksAPI from "../BooksAPI"
 import Book from "./Book";
+import {DebounceInput} from 'react-debounce-input';
+
 
 class Search extends React.Component {
   state = {
@@ -26,6 +28,8 @@ class Search extends React.Component {
             this.setState({searchBooks: []})
           }
         });
+    }else {
+      this.setState({searchBooks:[] })
     }
   }
 
@@ -47,11 +51,11 @@ class Search extends React.Component {
           </a>
 
 
-          {/* search input*/}
           <div className="search-books-input-wrapper">
-            <input
+
+            <DebounceInput
               type="text"
-              placeholder="Search by title or author"
+              placeholder="Search by title"
               onChange={e => {
                 this.handleSearch(e.target.value)
               }}
@@ -67,7 +71,7 @@ class Search extends React.Component {
             {this.state.searchBooks.map(book => (
               <Book
                 key={book.id}
-                image={book.imageLinks.thumbnail}
+                image={!!book.imageLinks ? book.imageLinks.thumbnail : ""}
                 shelf={book.shelf}
                 title={book.title}
                 authors={book.authors}

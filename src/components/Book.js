@@ -1,7 +1,17 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class Book extends Component {
+    // propTypes
+    static propTypes = {
 
+        image       : PropTypes.string,
+        shelf       : PropTypes.string,
+        title       : PropTypes.string,
+        authors     : PropTypes.array,
+        currentBook : PropTypes.object,
+        changeShelf : PropTypes.func,
+    }
     render() {
         const {id,title,image,shelf,authors} = this.props;
 

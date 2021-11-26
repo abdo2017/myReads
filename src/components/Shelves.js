@@ -6,11 +6,13 @@ class Shelves extends React.Component {
   render() {
     const allBooks = this.props.allBooks;
 
-    const currentlyReading = allBooks.filter(
-      book => book.shelf === "currentlyReading"
-    );
-    const wantToRead = allBooks.filter(book => book.shelf === "wantToRead");
-    const read = allBooks.filter(book => book.shelf === "read");
+    // object of shelves
+    const SHELVES = {
+      currentlyReading: allBooks.filter(b => b.shelf === "currentlyReading"),
+      wantToRead: allBooks.filter(b => b.shelf === "wantToRead"),
+      read: allBooks.filter(b => b.shelf === "read"),
+    }
+
     return (
         <>
           <Header />
@@ -19,19 +21,19 @@ class Shelves extends React.Component {
         <div>
 
           <Shelf
-            books={currentlyReading}
+            books={SHELVES.currentlyReading}
             title={"Currently Reading"}
             changeShelf={this.props.changeShelf}
           />
           {/* currently reading */}
           <Shelf
-            books={wantToRead}
+            books={SHELVES.wantToRead}
             title={"Want to Read"}
             changeShelf={this.props.changeShelf}
           />
           {/* want to read*/}
           <Shelf
-            books={read}
+            books={SHELVES.read}
             title={"Read"}
             changeShelf={this.props.changeShelf}
           />
